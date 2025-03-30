@@ -27,6 +27,7 @@ select * from venues
     @ResultMap("venueMapper")
     List<Venues> getAllvenue(Integer size, Integer page);
 
+
     @Select("""
 select * from venues where venue_id = #{venueId};
 """)
