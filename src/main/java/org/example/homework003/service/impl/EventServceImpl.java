@@ -1,6 +1,7 @@
 package org.example.homework003.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.homework003.exception.NullPointerExceptino;
 import org.example.homework003.model.entity.Events;
 import org.example.homework003.model.request.EventDTO;
 import org.example.homework003.repository.AttendeeRepository;
@@ -17,16 +18,22 @@ public class EventServceImpl implements EventService {
     private final EventRepository eventRepository;
     @Override
     public Events getEventById(Integer id) {
+        if(eventRepository.getEventById(id) == null) {
+            throw new NullPointerExceptino("Event with id " + id + " not found");
+        }
         return eventRepository.getEventById(id);
     }
 
     @Override
-    public List<Events> getAllEvents() {
-        return eventRepository.getAllEvent();
+    public List<Events> getAllEvents(Integer size,Integer page) {
+        return eventRepository.getAllEvent(size,page);
     }
 
     @Override
     public Events deleteEventById(Integer id) {
+        if(eventRepository.deleteEventById(id) == null) {
+            throw new NullPointerExceptino("Event with id " + id + " not found");
+        }
         return eventRepository.deleteEventById(id);
     }
 

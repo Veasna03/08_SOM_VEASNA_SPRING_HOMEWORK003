@@ -15,7 +15,9 @@ public interface EventRepository {
 
 
     @Select("""
-     select * from events ;
+     select * from events 
+            offset #{size} *(#{page}-1)
+  limit #{size};
 
 """)
     @Results(id = "eventMapper", value = {
@@ -31,7 +33,7 @@ public interface EventRepository {
                     many = @Many(select = "org.example.homework003.repository.AttendeeRepository.getAttendeeByEventId")
             )
     })
-    List<Events> getAllEvent();
+    List<Events> getAllEvent(Integer size, Integer page);
 
 //    @Select("""
 //SELECT

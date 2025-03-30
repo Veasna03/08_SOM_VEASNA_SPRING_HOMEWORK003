@@ -7,11 +7,11 @@ import org.example.homework003.model.request.VenuesDTO;
 import java.util.List;
 
 public interface VenueService {
-    VenuesDTO addVenue(VenuesDTO venue);
-    VenuesDTO getById(Integer id) throws NotFoundException;
+    Venues addVenue(VenuesDTO venue);
+    Venues getById(Integer id) throws NotFoundException;
     Venues updateVenue(Integer id,VenuesDTO venue);
     Venues deleteVenue(Integer id);
-    List<VenuesDTO> getAllVenues();
+    List<Venues> getAllVenues(Integer size,Integer page);
 
 
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EventService {
     Events getEventById(Integer id);
-    List<Events> getAllEvents();
+    List<Events> getAllEvents(Integer size , Integer page);
     Events deleteEventById(Integer id);
     Events AddEvent(EventDTO event);
     Events updateEvent(Integer id,EventDTO event);

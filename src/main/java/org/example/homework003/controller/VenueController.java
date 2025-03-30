@@ -24,9 +24,9 @@ public class VenueController {
         this.venueService = venueService;
     }
     @PostMapping
-    public ResponseEntity<ApiResponse<VenuesDTO>> createVenue(@RequestBody VenuesDTO venuesDTO) {
+    public ResponseEntity<ApiResponse<Venues>> createVenue(@RequestBody VenuesDTO venuesDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                ApiResponse.<VenuesDTO>builder()
+                ApiResponse.<Venues>builder()
                         .message("The venue has been successfully created")
                         .payload(venueService.addVenue(venuesDTO))
                         .status(HttpStatus.CREATED)
@@ -35,8 +35,8 @@ public class VenueController {
         );
     }
    @GetMapping("/{venue_id}")
-    public ResponseEntity<ApiResponse<VenuesDTO>> getById(@PathVariable("venue_id") Integer venue_id) throws NotFoundException {
-        ApiResponse<VenuesDTO> response=ApiResponse.<VenuesDTO>builder()
+    public ResponseEntity<ApiResponse<Venues>> getById(@PathVariable("venue_id") Integer venue_id) throws NotFoundException {
+        ApiResponse<Venues> response=ApiResponse.<Venues>builder()
                 .message("The venue has been successfully founded")
                 .payload(venueService.getById(venue_id))
                 .status(HttpStatus.OK)
@@ -71,11 +71,11 @@ public class VenueController {
         );
     }
     @GetMapping
-    public ResponseEntity<ApiResponse<List<VenuesDTO>>> getAllVenues() {
+    public ResponseEntity<ApiResponse<List<Venues>>> getAllVenues(@RequestParam(defaultValue = "10")Integer size ,@RequestParam(defaultValue = "1")Integer page) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                ApiResponse.<List<VenuesDTO>>builder()
+                ApiResponse.<List<Venues>>builder()
                         .message("The venue has been successfully retrieved")
-                        .payload(venueService.getAllVenues())
+                        .payload(venueService.getAllVenues(size,page))
                         .status(HttpStatus.OK)
                         .timestamp(LocalDateTime.now())
                         .build()

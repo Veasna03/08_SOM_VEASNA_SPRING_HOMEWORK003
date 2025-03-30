@@ -20,11 +20,11 @@ public class EventController {
     private final EventService eventService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Events>>> getEventById() {
+    public ResponseEntity<ApiResponse<List<Events>>> getAllEvent(@RequestParam(defaultValue = "10")Integer size,@RequestParam(defaultValue = "1")Integer page) {
         return ResponseEntity.ok(
                 ApiResponse.<List<Events>>builder()
                         .message("Event with id is founded")
-                        .payload(eventService.getAllEvents())
+                        .payload(eventService.getAllEvents(size,page))
                         .status(HttpStatus.OK)
                         .timestamp(LocalDateTime.now())
                         .build()

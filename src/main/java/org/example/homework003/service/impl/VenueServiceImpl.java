@@ -22,36 +22,42 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
-    public VenuesDTO addVenue(VenuesDTO venue) {
-             Venues venues=  venuesRepository.create(venue);
-        return  venuesMapper.toVenuesDTO(venues);
+    public Venues addVenue(VenuesDTO venue) {
+
+             return venuesRepository.create(venue);
     }
 
 
     @Override
-    public VenuesDTO getById(Integer id) throws NotFoundException {
+    public Venues getById(Integer id) throws NotFoundException {
           Venues venues= venuesRepository.getvenueById(id);
           if(venues==null){
               throw new NotFoundExceptions("Venue id: "+id+"  not found");
           }
-        return venuesMapper.toVenuesDTO(venuesRepository.getvenueById(id));
+        return venuesRepository.getvenueById(id);
     }
 
     @Override
     public Venues updateVenue(Integer id, VenuesDTO venue) {
+        if(venuesRepository.getvenueById(id)==null){
+            throw new NotFoundExceptions("Venue id: "+id+"  not found");
+        }
         return venuesRepository.updatevenue(id, venue);
     }
 
     @Override
     public Venues deleteVenue(Integer id) {
+        if(venuesRepository.getvenueById(id)==null){
+            throw new NotFoundExceptions("Venue id: "+id+"  not found");
+        }
         return venuesRepository.deletevenue(id);
     }
 
     @Override
-    public List<VenuesDTO> getAllVenues() {
+    public List<Venues> getAllVenues(Integer size,Integer page) {
 
 
-        return venuesMapper.toVenuesDTO(venuesRepository.getAllvenue());
+        return venuesRepository.getAllvenue(size,page);
     }
 }
 

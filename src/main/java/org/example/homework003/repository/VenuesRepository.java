@@ -20,10 +20,12 @@ public interface VenuesRepository {
     Venues create(@Param("v") VenuesDTO venues);
 
     @Select("""
-select * from venues;
+select * from venues
+       offset #{size} *(#{page}-1)
+  limit #{size}
 """)
     @ResultMap("venueMapper")
-    List<Venues> getAllvenue();
+    List<Venues> getAllvenue(Integer size, Integer page);
 
     @Select("""
 select * from venues where venue_id = #{venueId};
