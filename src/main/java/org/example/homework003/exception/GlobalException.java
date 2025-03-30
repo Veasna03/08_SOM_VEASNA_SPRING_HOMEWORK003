@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @RestControllerAdvice
 public class GlobalException {
     @ExceptionHandler(NotFoundExceptions.class)
@@ -24,29 +26,27 @@ public class GlobalException {
 //}
 
 
+//    @ExceptionHandler(NullPointerExceptino.class)
+//    public ProblemDetail handleNullPointer(NullPointerExceptino e) {
+//        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+//        problemDetail.setTitle(" Not Found");
+//        problemDetail.setProperty("Error:", e.getMessage());
+//        problemDetail.setProperty("timestamp", LocalDateTime.now());
+//        return problemDetail;
+//    }
     @ExceptionHandler(NullPointerExceptino.class)
     public ProblemDetail handleNullPointer(NullPointerExceptino e) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problemDetail.setTitle(" Not Found");
-        problemDetail.setProperty("Error:", e.getMessage());
+        problemDetail.setTitle("Bad Request");
+
+        // Add error details as a map (to match the structure in your image)
+        problemDetail.setProperty("errors", e.getErrorDetails());
         problemDetail.setProperty("timestamp", LocalDateTime.now());
+
         return problemDetail;
+        /// ✅ Use e.getMessage() when you only need a single error message (e.g., "Invalid input").
+        ///
+        /// ✅ Use e.getErrorDetails() when you need structured validation errors for multiple fields (e.g
     }
-//@ExceptionHandler(NullPointerExceptino.class)
-//    public ResponseEntity<?> handleNullPointerException(NullPointerExceptino e) {
-//    return new ResponseEntity<>(new ErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST );
-//
-//}
-//@ExceptionHandler(NullPointerExceptino.class)
-//public ProblemDetail handleNullPointer(NullPointerExceptino e) {
-//    ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-//    problemDetail.setTitle("Invalid Input");
-//
-//    // Adding multiple error messages
-//    problemDetail.setProperty("error",problemDetail);
-//    problemDetail.setProperty("timestamp", LocalDateTime.now());
-//
-//    return problemDetail;
-//}
 
 }

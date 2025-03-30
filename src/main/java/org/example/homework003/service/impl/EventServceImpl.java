@@ -19,7 +19,7 @@ public class EventServceImpl implements EventService {
     @Override
     public Events getEventById(Integer id) {
         if(eventRepository.getEventById(id) == null) {
-            throw new NullPointerExceptino("Event with id " + id + " not found");
+           // throw new NullPointerExceptino("Event with id " + id + " not found");
         }
         return eventRepository.getEventById(id);
     }
@@ -32,8 +32,9 @@ public class EventServceImpl implements EventService {
     @Override
     public Events deleteEventById(Integer id) {
         if(eventRepository.deleteEventById(id) == null) {
-            throw new NullPointerExceptino("Event with id " + id + " not found");
+           // throw new NullPointerExceptino("Event with id " + id + " not found");
         }
+
         return eventRepository.deleteEventById(id);
     }
 
@@ -46,6 +47,9 @@ public class EventServceImpl implements EventService {
 
     @Override
     public Events updateEvent(Integer id, EventDTO event) {
+//        if(eventRepository.getEventById(id) == null) {
+//            throw new NullPointerExceptino("Event with id " + id + " not found");
+//        }
        Events events= eventRepository.updateEventAttendee(id,event);
        eventRepository.deleteEventAttendeeByEventId(events.getEventId());
        attendeeRepository.insertEventAndAttendee(events.getEventId(),event.getAttendeeId());

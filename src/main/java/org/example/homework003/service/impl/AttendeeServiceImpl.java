@@ -21,6 +21,19 @@ public class AttendeeServiceImpl implements AttendeeService {
     private final AttendeeRepository attendeeRepository;
     @Override
     public List<Attendee> getAllAttendees(Integer size,Integer page) {
+        Map<String,String> error = new HashMap<>();
+        if (size <= 0) {
+            error.put("offset","must be greater than 0");
+        }
+        else if (page <= 0) {
+            error.put("page","must be greater than 0");
+        }
+        if(!error.isEmpty()) {
+            throw new NullPointerExceptino(error);
+        }
+
+
+
         return attendeeRepository.getAllAttendees(size,page);
     }
 
@@ -33,28 +46,70 @@ public class AttendeeServiceImpl implements AttendeeService {
         return attendeeRepository.getAttendeeById(id);
     }
 
-    @Override
-    public Attendee addAttendee(AttendeeDTO attendeeDTO) {
-        if (attendeeDTO.getEmail()=="" && attendeeDTO.getAttendeeName()=="") {
-          throw new NullPointerExceptino(Map.of("AttendeeName","must not be null"));
-        }
-        else if(!attendeeDTO.getEmail().contains("@gmail.com")) {
-            throw new NullPointerExceptino("must ne a well form email address");
-        }
-         else if (attendeeDTO.getAttendeeName() == null || attendeeDTO.getAttendeeName().isEmpty()) {
-            throw new NullPointerExceptino("Attendee name cannot be null or empty");
-        } else if (attendeeDTO.getEmail() == null || attendeeDTO.getEmail().isEmpty()) {
-            throw new NullPointerExceptino("Email cannot be null or empty");
-        }
-        return attendeeRepository.addAttendee(attendeeDTO);
+//    @Override
+//    public Attendee addAttendee(AttendeeDTO attendeeDTO) {
+//        if (attendeeDTO.getEmail()=="" && attendeeDTO.getAttendeeName()=="") {
+//          throw new NullPointerExceptino(Map.of("AttendeeName","must not be null"));
+//        }
+//        else if(!attendeeDTO.getEmail().contains("@gmail.com")) {
+//            throw new NullPointerExceptino("must ne a well form email address");
+//        }
+//         else if (attendeeDTO.getAttendeeName() == null || attendeeDTO.getAttendeeName().isEmpty()) {
+//            throw new NullPointerExceptino("Attendee name cannot be null or empty");
+//        } else if (attendeeDTO.getEmail() == null || attendeeDTO.getEmail().isEmpty()) {
+//            throw new NullPointerExceptino("Email cannot be null or empty");
+//        }
+//        return attendeeRepository.addAttendee(attendeeDTO);
+//    }
+@Override
+public Attendee addAttendee(AttendeeDTO attendeeDTO) {
+    Map<String, String> errors = new HashMap<>();
+    if(attendeeDTO.getAttendeeName()=="" && attendeeDTO.getEmail()==""){
+        errors.put("attendeeName","must not be blank");
+        errors.put("email","must not be blank");
     }
+     else if (attendeeDTO.getAttendeeName() == null || attendeeDTO.getAttendeeName().isEmpty()) {
+        errors.put("AttendeeName", "must not be blank");  // Matches the JSON format in the image
+    }
+    else if ( !attendeeDTO.getEmail().endsWith("@gmail.com")) {
+        errors.put("email", "must be a well-formed email address ending with @gmail.com");
+    }
+     else if (attendeeDTO.getEmail() == null || attendeeDTO.getEmail().isEmpty()) {
+        errors.put("email", "must not be blank");
+    }
+     if (!errors.isEmpty()) {
+        throw new NullPointerExceptino(errors);
+    }
+
+    return attendeeRepository.addAttendee(attendeeDTO);
+}
+
 
     @Override
     public Attendee updateAttendee(Integer id, AttendeeDTO attendeeDTO) {
+        Map<String, String> errors = new HashMap<>();
             Attendee attendee= attendeeRepository.getAttendeeById(id);
             if(attendee==null){
                 throw new NotFoundExceptions(" Could not update ,id : "+id+" is not found");
             }
+        if (attendeeDTO.getEmail() == "" && attendeeDTO.getAttendeeName() == "") {
+
+            errors.put("attendeeName", "must not be blank");
+            errors.put("email","must not be blank");
+        }
+            else if(attendeeDTO.getAttendeeName()==""){
+                errors.put("attendeeName","must not be blank");
+            }
+            else if(!attendeeDTO.getEmail().endsWith("@gmail.com")&&  !attendeeDTO.getAttendeeName().isEmpty() &&!attendeeDTO.getEmail().isEmpty()) {
+            errors.put("email", "must be a well-formed email address ending with @gmail.com");
+        }
+            else if(attendeeDTO.getEmail()==""){
+                errors.put("email","must not be blank");
+            }
+          if(!errors.isEmpty()) {
+              throw new NullPointerExceptino(errors);
+          }
+
         return attendeeRepository.updateAttendee(id, attendeeDTO);
     }
     @Override

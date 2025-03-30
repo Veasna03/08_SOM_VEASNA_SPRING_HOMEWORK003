@@ -14,8 +14,7 @@ public interface AttendeeRepository {
     @Select("""
 select * from attendees  
        offset #{size} *(#{page}-1)
-  limit #{size}  
-;
+  limit #{size} ;
 """)
     @Results(id = "attendeeMapper", value = {
             @Result(property = "attendeeId",column = "attendee_id"),
