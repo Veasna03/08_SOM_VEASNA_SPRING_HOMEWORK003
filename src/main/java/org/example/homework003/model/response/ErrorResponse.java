@@ -12,3 +12,4 @@ public class ErrorResponse {
     private String message;
     private HttpStatus status;
 }
+

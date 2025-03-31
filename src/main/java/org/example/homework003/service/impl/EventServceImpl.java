@@ -41,7 +41,10 @@ public class EventServceImpl implements EventService {
     @Override
     public Events AddEvent(EventDTO event) {
          Events events= eventRepository.insertEvent(event);
-         attendeeRepository.insertEventAndAttendee(events.getEventId(),event.getVenueId());
+         for(Integer attendeeId:event.getAttendeeId()){
+             attendeeRepository.insertEventAndAttendee(events.getEventId(),attendeeId);
+         }
+
         return eventRepository.getEventById(events.getEventId());
     }
 
@@ -52,7 +55,10 @@ public class EventServceImpl implements EventService {
 //        }
        Events events= eventRepository.updateEventAttendee(id,event);
        eventRepository.deleteEventAttendeeByEventId(events.getEventId());
-       attendeeRepository.insertEventAndAttendee(events.getEventId(),event.getAttendeeId());
+       for (Integer attendeeId:event.getAttendeeId()){
+           attendeeRepository.insertEventAndAttendee(events.getEventId(),attendeeId);
+       }
+
         return eventRepository.updateEventAttendee(events.getEventId(),event);
     }
 }
